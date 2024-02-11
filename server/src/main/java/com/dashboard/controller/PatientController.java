@@ -1,47 +1,64 @@
 package com.dashboard.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import com.dashboard.util.ControllerConstants;
+import lombok.AllArgsConstructor;
 import com.dashboard.model.Patient;
+import com.dashboard.repository.PatientRepository;
 
 @RestController
 @Validated
-@RequestMapping()
+@AllArgsConstructor
 public class PatientController {
 
-    public PatientController() {}
+    @Autowired
+    private PatientRepository repository;
 
-    @CrossOrigin(origins = "http://localhost:3000") // TODO: remove after testing
+    @CrossOrigin(origins = "http://localhost:3000") // For demo purposes only
     @PostMapping(ControllerConstants.CREATE_PATIENT_DATA_URL)
-    public @ResponseBody ResponseEntity<Patient> createPatientData(@RequestBody Patient patient) {
-        return new ResponseEntity<Patient>(patient, HttpStatus.OK);
+    public Patient createPatient(@RequestBody Patient patient) {
+        return repository.save(patient);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(ControllerConstants.GET_PATIENT_DATA_URL)
-    public @ResponseBody ResponseEntity<String> getPatientData(@RequestParam String fieldKey, @RequestParam String fieldValue) {
-        return new ResponseEntity<String>(fieldKey + fieldValue, HttpStatus.OK);
+    public Page<Patient> getPatient(@RequestParam String key, @RequestParam String value) {
+        return repository.findPatient(key,value, PageRequest.of(0, 10));
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(ControllerConstants.UPDATE_PATIENT_DATA_URL)
-    public @ResponseBody ResponseEntity<Patient> updatePatientData(@RequestBody Patient patient) {
-        return new ResponseEntity<Patient>(patient, HttpStatus.OK);
+    @PutMapping(ControllerConstants.UPDATE_PATIENT_DATA_URL)
+    public Patient updatePatient(@PathVariable String id, @RequestBody Patient patient) {
+        patient.setId(id);
+        return repository.save(patient);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(ControllerConstants.DELETE_PATIENT_DATA_URL)
-    public @ResponseBody ResponseEntity<Patient> deletePatientData(@RequestBody Patient patient) {
-        return new ResponseEntity<Patient>(patient, HttpStatus.OK);
+    @DeleteMapping(ControllerConstants.DELETE_PATIENT_DATA_URL)
+    public void deletePatient(@PathVariable String id) {
+        repository.deleteById(id);
+    }
+
+    // For testing
+    @GetMapping(ControllerConstants.GET_ALL_PATIENT_DATA_URL)
+    public Iterable<Patient> getAll() {
+        return repository.findAll();
+    }
+
+    @DeleteMapping(ControllerConstants.DELETE_ALL_PATIENT_DATA_URL)
+    public void deleteAll(@PathVariable String id) {
+        repository.deleteAll();
     }
 }

@@ -1,6 +1,19 @@
 package com.dashboard.model;
 
-import lombok.Builder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import lombok.Data;
 
-@Builder
-public record Patient(Field[] fields){}
+@Data
+@Document(indexName = "patient")
+public class Patient {
+    @Id
+    private String id;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String dateOfBirth;
+    private Status status;
+    private String[] addresses;
+    // TODO: arbitrary fields
+}

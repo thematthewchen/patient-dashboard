@@ -27,7 +27,7 @@ public class PatientController {
     private PatientRepository repository;
 
     @CrossOrigin(origins = "http://localhost:3000") // For demo purposes only
-    @PostMapping(ControllerConstants.CREATE_PATIENT_DATA_URL)
+    @PostMapping(ControllerConstants.CREATE_OR_UPDATE_PATIENT_DATA_URL)
     public Patient createPatient(@RequestBody Patient patient) {
         return repository.save(patient);
     }
@@ -39,15 +39,8 @@ public class PatientController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping(ControllerConstants.UPDATE_PATIENT_DATA_URL)
-    public Patient updatePatient(@PathVariable String id, @RequestBody Patient patient) {
-        patient.setId(id);
-        return repository.save(patient);
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping(ControllerConstants.DELETE_PATIENT_DATA_URL)
-    public void deletePatient(@PathVariable String id) {
+    public void deletePatient(@RequestParam String id) {
         repository.deleteById(id);
     }
 

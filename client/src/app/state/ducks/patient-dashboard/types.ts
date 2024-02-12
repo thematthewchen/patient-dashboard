@@ -1,5 +1,3 @@
-import { AxiosReponse } from 'axios';
-
 export type ApiResponse = Record<string, unknown>;
 
 export interface ApiResponseError {
@@ -7,13 +5,32 @@ export interface ApiResponseError {
     readonly message?: string;
 }
 
-export interface Field {
-    key: string,
-    values: string
+export enum Status {
+    INQUIRY = 'INQUIRY',
+    ONBOARDING = 'ONBOARDING',
+    ACTIVE = 'ACTIVE',
+    CHURNED = 'CHURNED'
 }
 
-export interface Patient extends ApiResponse {
-    fields: Field[];
+export interface Patient {
+    id?: string,
+    firstName: string,
+    middleName: string,
+    lastName: string,
+    dateOfBirth: string,
+    status: Status,
+    addresses: string[]
+    // TODO: extra fields
+}
+
+export interface PatientLookup {
+    key: string,
+    value: string
+}
+
+export interface PatientResponse extends ApiResponse {
+    content: Patient[],
+    numberOfElements: number
 }
 
 // Action Types
@@ -38,19 +55,19 @@ export interface CreatePatientErrorAction {
 export const GET_PATIENT = 'GET_PATIENT';
 export interface GetPatientAction {
     type: typeof GET_PATIENT;
-    payload: Patient;
+    payload: PatientLookup;
 }
 
 export const GET_PATIENT_SUCCESS = 'GET_PATIENT_SUCCESS';
 export interface GetPatientSuccessAction {
     type: typeof GET_PATIENT_SUCCESS;
-    payload?: Patient;
+    payload: PatientResponse;
 }
 
 export const GET_PATIENT_ERROR = 'GET_PATIENT_ERROR';
 export interface GetPatientErrorAction {
-    type: typeof CREATE_PATIENT_ERROR;
-    payload?: Patient;
+    type: typeof GET_PATIENT_ERROR;
+    payload: PatientResponse;
 }
 
 export const UPDATE_PATIENT = 'UPDATE_PATIENT';
@@ -74,19 +91,28 @@ export interface UpdatePatientErrorAction {
 export const DELETE_PATIENT = 'DELETE_PATIENT';
 export interface DeletePatientAction {
     type: typeof DELETE_PATIENT;
-    payload: Patient;
+    payload: string | undefined;
 }
 
 export const DELETE_PATIENT_SUCCESS = 'DELETE_PATIENT_SUCCESS';
 export interface DeletePatientSuccessAction {
     type: typeof DELETE_PATIENT_SUCCESS;
-    payload?: Patient;
 }
 
 export const DELETE_PATIENT_ERROR = 'DELETE_PATIENT_ERROR';
 export interface DeletePatientErrorAction {
     type: typeof DELETE_PATIENT_ERROR;
-    payload?: Patient;
+}
+
+export const SELECT_PATIENT = 'SELECT_PATIENT';
+export interface SelectPatientAction {
+    type: typeof SELECT_PATIENT;
+    payload: Patient;
+}
+
+export const CLEAR_RESULTS = 'CLEAR_RESULTS';
+export interface ClearResultsAction {
+    type: typeof CLEAR_RESULTS;
 }
 
 export type DashboardActionTypes = 
@@ -101,4 +127,6 @@ export type DashboardActionTypes =
     | UpdatePatientErrorAction
     | DeletePatientAction
     | DeletePatientErrorAction
-    | DeletePatientSuccessAction;
+    | DeletePatientSuccessAction
+    | SelectPatientAction
+    | ClearResultsAction;

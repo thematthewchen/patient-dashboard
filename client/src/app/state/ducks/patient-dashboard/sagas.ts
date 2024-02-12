@@ -11,14 +11,10 @@ import { CREATE_PATIENT,
     GET_PATIENT, 
     GET_PATIENT_ERROR, 
     GET_PATIENT_SUCCESS, 
-    GetPatientAction, 
-    UPDATE_PATIENT,
-    UPDATE_PATIENT_ERROR, 
-    UPDATE_PATIENT_SUCCESS, 
-    UpdatePatientAction } from './types';
+    GetPatientAction} from './types';
 import { Urls } from '../../../../shared/urls';
 
-function* createPatient({payload}: CreatePatientAction): Generator {
+function* createOrUpdatePatient({payload}: CreatePatientAction): Generator {
     try {
         const response: AxiosResponse = (yield axios.post(Urls.CREATE_PATIENT_DATA_ACTION_URL, payload)) as AxiosResponse;
         const data = response.data;
@@ -46,7 +42,8 @@ function* getPatient({payload}: GetPatientAction): Generator {
     try {
         const response: AxiosResponse = (yield axios.get(Urls.GET_PATIENT_DATA_ACTION_URL, {
             params: {
-                payload
+                key: payload.key,
+                value: payload.value
             }
         })) as AxiosResponse;
         const data = response.data;
@@ -70,33 +67,14 @@ function* getPatient({payload}: GetPatientAction): Generator {
     }
 }
 
-function* updatePatient({payload}: UpdatePatientAction): Generator {
-    try {
-        const response: AxiosResponse = (yield axios.post(Urls.UPDATE_PATIENT_DATA_ACTION_URL, payload)) as AxiosResponse;
-        const data = response.data;
-        if (data.error === undefined) {
-            yield put({
-                type: UPDATE_PATIENT_SUCCESS, 
-                payload: data
-            })
-        } else {
-            yield put({
-                type: UPDATE_PATIENT_ERROR, 
-                payload: [data.error]
-            })
-        }
-    } catch (e) {
-        console.log(e);
-        yield put({
-            type: UPDATE_PATIENT_ERROR,
-            payload: [{ code: 'UNEXPECTED_ERROR', message: 'There was an unexpected error updating a patient'}]
-        })
-    }
-}
-
 function* deletePatient({payload}: DeletePatientAction): Generator {
+    console.log(payload);
     try {
-        const response: AxiosResponse = (yield axios.post(Urls.DELETE_PATIENT_DATA_ACTION_URL, payload)) as AxiosResponse;
+        const response: AxiosResponse = (yield axios.delete(Urls.DELETE_PATIENT_DATA_ACTION_URL, {
+            params: {
+                id: payload
+            }
+        })) as AxiosResponse;
         const data = response.data;
         if (data.error === undefined) {
             yield put({
@@ -119,15 +97,11 @@ function* deletePatient({payload}: DeletePatientAction): Generator {
 }
 
 function* watchCreatePatient() {
-    yield takeEvery(CREATE_PATIENT, createPatient);
+    yield takeEvery(CREATE_PATIENT, createOrUpdatePatient);
 }
 
 function* watchGetPatient() {
     yield takeEvery(GET_PATIENT, getPatient);
-}
-
-function* watchUpdatePatient() {
-    yield takeEvery(UPDATE_PATIENT, updatePatient);
 }
 
 function* watchDeletePatient() {
@@ -137,6 +111,5 @@ function* watchDeletePatient() {
 export default function* rootSaga(): Generator {
     yield all([fork(watchCreatePatient), 
         fork(watchGetPatient),
-        fork(watchUpdatePatient),
         fork(watchDeletePatient)]);
 }

@@ -1,28 +1,40 @@
-import { CREATE_PATIENT, DELETE_PATIENT, DashboardActionTypes, GET_PATIENT, Patient, UPDATE_PATIENT } from "./types";
+import { CREATE_PATIENT, 
+    DELETE_PATIENT, 
+    DashboardActionTypes, 
+    PatientLookup, 
+    GET_PATIENT, 
+    Patient, 
+    SELECT_PATIENT,
+    CLEAR_RESULTS } from "./types";
 
-const createPatient = (patient: Patient): DashboardActionTypes => ({
+const createOrUpdatePatient = (patient: Patient): DashboardActionTypes => ({
     type: CREATE_PATIENT,
     payload: patient,
 });
 
-const getPatient = (patient: Patient): DashboardActionTypes => ({
+const getPatient = (patientLookup: PatientLookup): DashboardActionTypes => ({
     type: GET_PATIENT,
-    payload: patient,
+    payload: patientLookup,
 });
 
-const updatePatient = (patient: Patient): DashboardActionTypes => ({
-    type: UPDATE_PATIENT,
-    payload: patient,
-});
-
-const deletePatient = (patient: Patient): DashboardActionTypes => ({
+const deletePatient = (id: string | undefined): DashboardActionTypes => ({
     type: DELETE_PATIENT,
+    payload: id,
+});
+
+const selectPatientAction = (patient: Patient): DashboardActionTypes => ({
+    type: SELECT_PATIENT,
     payload: patient,
 });
+
+const clearSearchResultsAction = (): DashboardActionTypes => ({
+    type: CLEAR_RESULTS
+})
 
 export default {
-    createPatient,
+    createOrUpdatePatient,
     getPatient,
-    updatePatient,
-    deletePatient
+    deletePatient,
+    selectPatientAction,
+    clearSearchResultsAction
 }

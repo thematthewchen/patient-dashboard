@@ -11,7 +11,12 @@ import { CREATE_PATIENT,
     GET_PATIENT, 
     GET_PATIENT_ERROR, 
     GET_PATIENT_SUCCESS, 
-    GetPatientAction} from './types';
+    GetPatientAction,
+    GET_PATIENT_RANGE, 
+    GET_PATIENT_RANGE_ERROR, 
+    GET_PATIENT_RANGE_SUCCESS, 
+    GetPatientRangeAction,
+} from './types';
 import { Urls } from '../../../../shared/urls';
 
 function* createOrUpdatePatient({payload}: CreatePatientAction): Generator {
@@ -67,6 +72,36 @@ function* getPatient({payload}: GetPatientAction): Generator {
     }
 }
 
+function* getPatientRange({payload}: GetPatientRangeAction): Generator {
+    try {
+        const response: AxiosResponse = (yield axios.get(Urls.GET_PATIENT_RANGE_DATA_ACTION_URL, {
+            params: {
+                key: payload.key,
+                gte: payload.gte,
+                lte: payload.lte
+            }
+        })) as AxiosResponse;
+        const data = response.data;
+        if (data.error === undefined) {
+            yield put({
+                type: GET_PATIENT_RANGE_SUCCESS, 
+                payload: data
+            })
+        } else {
+            yield put({
+                type: GET_PATIENT_RANGE_ERROR, 
+                payload: [data.error]
+            })
+        }
+    } catch (e) {
+        console.log(e);
+        yield put({
+            type: GET_PATIENT_RANGE_ERROR,
+            payload: [{ code: 'UNEXPECTED_ERROR', message: 'There was an unexpected error getting a patient within range'}]
+        })
+    }
+}
+
 function* deletePatient({payload}: DeletePatientAction): Generator {
     console.log(payload);
     try {
@@ -104,6 +139,10 @@ function* watchGetPatient() {
     yield takeEvery(GET_PATIENT, getPatient);
 }
 
+function* watchGetPatientRange() {
+    yield takeEvery(GET_PATIENT_RANGE, getPatientRange);
+}
+
 function* watchDeletePatient() {
     yield takeEvery(DELETE_PATIENT, deletePatient);
 }
@@ -111,5 +150,6 @@ function* watchDeletePatient() {
 export default function* rootSaga(): Generator {
     yield all([fork(watchCreatePatient), 
         fork(watchGetPatient),
+        fork(watchGetPatientRange),
         fork(watchDeletePatient)]);
 }

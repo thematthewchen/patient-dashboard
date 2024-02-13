@@ -41,15 +41,21 @@ export default function PatientForm(props: PatientFormProps) {
     middleName: '',
     lastName: '',
     dateOfBirth: '',
-    status: Status.ACTIVE,
-    addresses: [''],
+    status: "ACTIVE",
+    addresses: [],
+    city: [],
+    fieldKeys: [],
+    fieldValues: []
   } : {
-    firstName: dashboardState.selectedProfile.firstName,
-    middleName: dashboardState.selectedProfile.middleName,
-    lastName: dashboardState.selectedProfile.lastName,
-    dateOfBirth: dashboardState.selectedProfile.dateOfBirth,
-    status: dashboardState.selectedProfile.status,
-    addresses: dashboardState.selectedProfile.addresses,
+    ...dashboardState.selectedProfile
+  }
+
+  const addAddress = () => {
+    dispatch(dashboardActions.addAddressAction(""));
+  }
+
+  const addField = () => {
+    dispatch(dashboardActions.addFieldAction({"key": "", "value": ""}));
   }
 
   const deleteProfile = () => {
@@ -70,9 +76,16 @@ export default function PatientForm(props: PatientFormProps) {
     onSubmit: (values) => {
       dispatch(
         dashboardActions.createOrUpdatePatient({
-          ...values,
           id: props.newPatient ? undefined : dashboardState.selectedProfile.id,
-          addresses: ['TODO']
+          firstName: values.firstName,
+          middleName: values.middleName,
+          lastName: values.lastName,
+          dateOfBirth: values.dateOfBirth,
+          status: values.status as Status,
+          addresses: values.addresses,
+          city: values.city,
+          fieldKeys: values.fieldKeys,
+          fieldValues: values.fieldValues
         })
       );
       toast(props.newPatient ? {
@@ -92,6 +105,42 @@ export default function PatientForm(props: PatientFormProps) {
       history.push('/');
     },
   })
+
+  const addressFormData = dashboardState.selectedProfile.city != undefined ? dashboardState.selectedProfile.city.map((city, index) => {
+    const addressIndex = 'city[' + index + "]";
+    return (
+      <>
+        <FormLabel paddingTop='5' htmlFor='addresses'>City of Residence</FormLabel>
+        <Input
+          id={addressIndex}
+          placeholder='Enter city of residence'
+          onChange={formik.handleChange}
+          value={formik.values.city[index]}
+        />
+      </>
+    )
+  }) : <></>;
+
+  const additionalFormData = dashboardState.selectedProfile.fieldKeys != undefined ? dashboardState.selectedProfile.fieldKeys.map((fieldKey, index) => {
+    const fieldKeyId = 'fieldKeys[' + index + "]";
+    const fieldValueId = 'fieldValues[' + index + "]";
+    return (
+      <Flex>
+        <Input
+          id={fieldKeyId}
+          placeholder='Enter the title of a new field'
+          onChange={formik.handleChange}
+          value={formik.values.fieldKeys[index]}
+        />
+        <Input
+          id={fieldValueId}
+          placeholder='Enter the value of a new field'
+          onChange={formik.handleChange}
+          value={formik.values.fieldValues[index]}
+        />
+      </Flex>
+    )
+  }) : <></>;
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -134,13 +183,11 @@ export default function PatientForm(props: PatientFormProps) {
             <option value='ACTIVE'>ACTIVE</option>
             <option value='CHURNED'>CHURNED</option>
         </Select>
-        <FormLabel paddingTop='5' htmlFor='addresses'>City of Residence</FormLabel>
-        <Input
-          id='addresses'
-          placeholder='Enter city of residence'
-          onChange={formik.handleChange}
-          value={formik.values.addresses}
-        />
+        {addressFormData}
+        {dashboardState.selectedProfile.fieldKeys.length > 0 ? <FormLabel paddingTop='5' htmlFor='status'>Additional Fields</FormLabel>: <></>}
+        {additionalFormData}
+        <Button margin='5' variant='outline' onClick={addAddress}>Add Another Address</Button>
+        <Button margin='5' variant='outline' onClick={addField}>Add Another Custom Field</Button>
         {props.newPatient ?
           <Button colorScheme='teal' marginTop='5' type='submit'>Create Profile</Button>
         :

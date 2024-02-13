@@ -12,6 +12,17 @@ export enum Status {
     CHURNED = 'CHURNED'
 }
 
+export interface Address {
+    streetAddress: string,
+    city: string
+    zipCode: string
+}
+
+export interface Field {
+    key: string,
+    value: string
+}
+
 export interface Patient {
     id?: string,
     firstName: string,
@@ -19,13 +30,21 @@ export interface Patient {
     lastName: string,
     dateOfBirth: string,
     status: Status,
-    addresses: string[]
-    // TODO: extra fields
+    addresses: string[],
+    city: string[],
+    fieldKeys: string[],
+    fieldValues: string[],
 }
 
 export interface PatientLookup {
     key: string,
     value: string
+}
+
+export interface PatientRangeLookup {
+    key: string,
+    gte: number,
+    lte: number
 }
 
 export interface PatientResponse extends ApiResponse {
@@ -67,6 +86,24 @@ export interface GetPatientSuccessAction {
 export const GET_PATIENT_ERROR = 'GET_PATIENT_ERROR';
 export interface GetPatientErrorAction {
     type: typeof GET_PATIENT_ERROR;
+    payload: PatientResponse;
+}
+
+export const GET_PATIENT_RANGE = 'GET_PATIENT_RANGE';
+export interface GetPatientRangeAction {
+    type: typeof GET_PATIENT_RANGE;
+    payload: PatientRangeLookup;
+}
+
+export const GET_PATIENT_RANGE_SUCCESS = 'GET_PATIENT_RANGE_SUCCESS';
+export interface GetPatientRangeSuccessAction {
+    type: typeof GET_PATIENT_RANGE_SUCCESS;
+    payload: PatientResponse;
+}
+
+export const GET_PATIENT_RANGE_ERROR = 'GET_PATIENT_RANGE_ERROR';
+export interface GetPatientRangeErrorAction {
+    type: typeof GET_PATIENT_RANGE_ERROR;
     payload: PatientResponse;
 }
 
@@ -115,6 +152,18 @@ export interface ClearResultsAction {
     type: typeof CLEAR_RESULTS;
 }
 
+export const ADD_ADDRESS = 'ADD_ADDRESS';
+export interface AddAddressAction {
+    type: typeof ADD_ADDRESS;
+    payload: string;
+}
+
+export const ADD_FIELD = 'ADD_FIELD';
+export interface AddFieldAction {
+    type: typeof ADD_FIELD;
+    payload: Field;
+}
+
 export type DashboardActionTypes = 
     | CreatePatientAction
     | CreatePatientSuccessAction
@@ -122,6 +171,9 @@ export type DashboardActionTypes =
     | GetPatientAction
     | GetPatientSuccessAction
     | GetPatientErrorAction
+    | GetPatientRangeAction
+    | GetPatientRangeSuccessAction
+    | GetPatientRangeErrorAction
     | UpdatePatientAction
     | UpdatePatientSuccessAction
     | UpdatePatientErrorAction
@@ -129,4 +181,6 @@ export type DashboardActionTypes =
     | DeletePatientErrorAction
     | DeletePatientSuccessAction
     | SelectPatientAction
-    | ClearResultsAction;
+    | ClearResultsAction
+    | AddAddressAction
+    | AddFieldAction;

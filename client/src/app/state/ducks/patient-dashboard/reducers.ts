@@ -4,9 +4,13 @@ import { ApiResponseError,
     Status, 
     GET_PATIENT, 
     GET_PATIENT_SUCCESS, 
+    GET_PATIENT_RANGE,
+    GET_PATIENT_RANGE_SUCCESS,
     PatientResponse, 
     SELECT_PATIENT, 
-    CLEAR_RESULTS} from "./types";
+    CLEAR_RESULTS,
+    ADD_ADDRESS,
+    ADD_FIELD} from "./types";
 
 export interface DashboardState {
     patientResponse: PatientResponse;
@@ -26,7 +30,10 @@ export const initialState: DashboardState = {
         lastName: '',
         dateOfBirth: '',
         status: Status.ACTIVE,
-        addresses: []
+        addresses: [],
+        city: [],
+        fieldKeys: [],
+        fieldValues: []
     },
     loading: false,
     errors: [],
@@ -47,12 +54,25 @@ const dashboardReducer = (state: DashboardState = initialState, action: Dashboar
                 loading: false
             }
         };
+        case GET_PATIENT_RANGE: {
+            return {
+                ...state,
+                loading: true
+            }
+        };
+        case GET_PATIENT_RANGE_SUCCESS: {
+            return {
+                ...state,
+                patientResponse: action.payload,
+                loading: false
+            }
+        };
         case SELECT_PATIENT: {
             return {
                 ...state,
                 selectedProfile: action.payload,
             }
-        }
+        };
         case CLEAR_RESULTS: {
             return {
                 ...state,
@@ -61,7 +81,26 @@ const dashboardReducer = (state: DashboardState = initialState, action: Dashboar
                     numberOfElements: 0
                 }
             }
-        }
+        };
+        case ADD_ADDRESS: {
+            return {
+                ...state,
+                selectedProfile: {
+                    ...state.selectedProfile,
+                    city: [...state.selectedProfile.city, action.payload]
+                }
+            }
+        };
+        case ADD_FIELD: {
+            return {
+                ...state,
+                selectedProfile: {
+                    ...state.selectedProfile,
+                    fieldKeys: state.selectedProfile.fieldKeys == undefined ? [action.payload.key] : [...state.selectedProfile.fieldKeys, action.payload.key],
+                    fieldValues: state.selectedProfile.fieldValues == undefined ? [action.payload.key] : [...state.selectedProfile.fieldValues, action.payload.value],
+                }
+            }
+        };
         default:
             return state;
     }

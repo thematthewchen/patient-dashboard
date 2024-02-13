@@ -7,7 +7,7 @@ import {
 
 export default function NewProfile() {
     return (
-        <Container maxW='container.sm' paddingTop='10'>
+        <Container maxW='container.sm' padding='10'>
             <Text fontSize='4xl'>Create a New Patient Profile</Text>
             <PatientForm newPatient={true} />
         </Container>

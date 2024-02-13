@@ -12,7 +12,7 @@ export default function Profile() {
     const dashboardState = useSelector((state: RootState) => state.dashboardState);
 
     return (
-        <Container maxW='container.sm' paddingTop='10'>
+        <Container maxW='container.sm' padding='10'>
             <Center>
                 <Text fontSize='4xl'>{dashboardState.selectedProfile.firstName}'s Profile</Text>
             </Center>

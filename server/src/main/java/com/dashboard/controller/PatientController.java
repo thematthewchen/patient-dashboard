@@ -39,6 +39,12 @@ public class PatientController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(ControllerConstants.GET_PATIENT_IN_RANGE_DATA_URL)
+    public Page<Patient> getPatientInRange(@RequestParam String key, @RequestParam int gte, @RequestParam int lte) {
+        return repository.findPatientInRange(key, gte, lte, PageRequest.of(0, 10));
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping(ControllerConstants.DELETE_PATIENT_DATA_URL)
     public void deletePatient(@RequestParam String id) {
         repository.deleteById(id);

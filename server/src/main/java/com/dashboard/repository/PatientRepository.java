@@ -10,5 +10,8 @@ public interface PatientRepository extends ElasticsearchRepository<Patient, Stri
     // Returns documents with "key" fuzzy matching "value"
     @Query("{\"match\" : {\"?0\" : {\"query\" : \"?1\",\"fuzziness\": \"auto\"}}}")
     Page<Patient> findPatient(String key, String value, Pageable pageable);
-}
 
+    // Returns documents with "key" in a range between gte and lte
+    @Query("{\"range\": {\"?0\": {\"gte\": ?1,\"lte\": ?2}}}")
+    Page<Patient> findPatientInRange(String key, int gte, int lte, Pageable pageable);
+}

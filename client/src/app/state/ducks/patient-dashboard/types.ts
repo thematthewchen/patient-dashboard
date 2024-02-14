@@ -6,16 +6,11 @@ export interface ApiResponseError {
 }
 
 export enum Status {
+    UNSELECTED = '',
     INQUIRY = 'INQUIRY',
     ONBOARDING = 'ONBOARDING',
     ACTIVE = 'ACTIVE',
     CHURNED = 'CHURNED'
-}
-
-export interface Address {
-    streetAddress: string,
-    city: string
-    zipCode: string
 }
 
 export interface Field {
@@ -29,9 +24,11 @@ export interface Patient {
     middleName: string,
     lastName: string,
     dateOfBirth: string,
+    age: number,
     status: Status,
-    addresses: string[],
-    city: string[],
+    streetAddress: string[],
+    city: string[]
+    zipCode: string[]
     fieldKeys: string[],
     fieldValues: string[],
 }
@@ -158,10 +155,22 @@ export interface AddAddressAction {
     payload: string;
 }
 
+export const REMOVE_ADDRESS = 'REMOVE_ADDRESS';
+export interface RemoveAddressAction {
+    type: typeof REMOVE_ADDRESS;
+    payload: number;
+}
+
 export const ADD_FIELD = 'ADD_FIELD';
 export interface AddFieldAction {
     type: typeof ADD_FIELD;
     payload: Field;
+}
+
+export const REMOVE_FIELD = 'REMOVE_FIELD';
+export interface RemoveFieldAction {
+    type: typeof REMOVE_FIELD;
+    payload: number;
 }
 
 export type DashboardActionTypes = 
@@ -183,4 +192,6 @@ export type DashboardActionTypes =
     | SelectPatientAction
     | ClearResultsAction
     | AddAddressAction
-    | AddFieldAction;
+    | RemoveAddressAction
+    | AddFieldAction
+    | RemoveFieldAction;

@@ -10,7 +10,8 @@ import { ApiResponseError,
     SELECT_PATIENT, 
     CLEAR_RESULTS,
     ADD_ADDRESS,
-    ADD_FIELD} from "./types";
+    ADD_FIELD,
+    REMOVE_FIELD} from "./types";
 
 export interface DashboardState {
     patientResponse: PatientResponse;
@@ -19,22 +20,26 @@ export interface DashboardState {
     errors: ApiResponseError[];
 }
 
+const noSelectedProfile = {
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    dateOfBirth: '',
+    age: 0,
+    status: Status.UNSELECTED,
+    streetAddress: [],
+    city: [],
+    zipCode: [],
+    fieldKeys: [],
+    fieldValues: []
+}
+
 export const initialState: DashboardState = {
     patientResponse: {
         content: [],
         numberOfElements: 0
     },
-    selectedProfile: {
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        dateOfBirth: '',
-        status: Status.ACTIVE,
-        addresses: [],
-        city: [],
-        fieldKeys: [],
-        fieldValues: []
-    },
+    selectedProfile: noSelectedProfile,
     loading: false,
     errors: [],
 }
@@ -79,7 +84,8 @@ const dashboardReducer = (state: DashboardState = initialState, action: Dashboar
                 patientResponse: {
                     content: [],
                     numberOfElements: 0
-                }
+                },
+                selectedProfile: noSelectedProfile
             }
         };
         case ADD_ADDRESS: {
@@ -98,6 +104,16 @@ const dashboardReducer = (state: DashboardState = initialState, action: Dashboar
                     ...state.selectedProfile,
                     fieldKeys: state.selectedProfile.fieldKeys == undefined ? [action.payload.key] : [...state.selectedProfile.fieldKeys, action.payload.key],
                     fieldValues: state.selectedProfile.fieldValues == undefined ? [action.payload.key] : [...state.selectedProfile.fieldValues, action.payload.value],
+                }
+            }
+        };
+        case REMOVE_FIELD: {
+            return {
+                ...state,
+                selectedProfile: {
+                    ...state.selectedProfile,
+                    fieldKeys: [...state.selectedProfile.fieldKeys.slice(0, action.payload), ...state.selectedProfile.fieldKeys.slice(action.payload + 1)],
+                    fieldValues: [...state.selectedProfile.fieldValues.slice(0, action.payload), ...state.selectedProfile.fieldValues.slice(action.payload + 1)]
                 }
             }
         };

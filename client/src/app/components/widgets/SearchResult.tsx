@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 export interface SearchResultProps extends Patient {}
 
 export default function SearchResult(props: SearchResultProps) {
+    const { firstName, middleName, lastName, status, age, city } = props;
     const history = useHistory();
     const dispatch = useDispatch();
     const setSelectedProfile = () => {
@@ -24,7 +25,13 @@ export default function SearchResult(props: SearchResultProps) {
           );
         history.push('/profile')
     };
-    const status = props.status === undefined ? 'UNDEFINED' : props.status;
+    const citiesContent = city != undefined && city.map((cityElement, index) => {
+        return (
+            (index == city.length - 1) ? 
+            <Text key={index} paddingLeft='1' fontSize='md'> {cityElement} </Text> : 
+            <Text key={index} paddingLeft='1' fontSize='md'> {cityElement}, </Text>
+        )
+    }); 
     return (
         <Box
             width='100%'
@@ -40,14 +47,20 @@ export default function SearchResult(props: SearchResultProps) {
             onClick={setSelectedProfile}
         >
             <Flex justifyContent="flex-end">
-                <Text fontSize='xl'>{props.firstName}</Text>
-                <Text paddingLeft='1' fontSize='xl'>{props.middleName}</Text>
-                <Text paddingLeft='1' fontSize='xl'>{props.lastName}</Text>
+                <Text fontSize='xl'>{firstName}</Text>
+                <Text paddingLeft='1' fontSize='xl'>{middleName}</Text>
+                <Text paddingLeft='1' fontSize='xl'>{lastName}</Text>
                 <Spacer/>  
-                <Status status={'INQUIRY'}></Status>  
+                <Status status={status}></Status>  
             </Flex>
-            <Text fontSize='md'>{props.dateOfBirth}</Text>
-            <Text fontSize='md'>{props.addresses}</Text>
+            <Text fontSize='md'>Age: {age}</Text>
+            <Flex>
+                {city != undefined && city.length > 0 ? 
+                <>
+                    <Text fontSize='md'>Addresses:</Text>
+                    {citiesContent}
+                </> : <></>}
+            </Flex>
         </Box>
     )
 }

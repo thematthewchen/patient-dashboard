@@ -103,7 +103,6 @@ function* getPatientRange({payload}: GetPatientRangeAction): Generator {
 }
 
 function* deletePatient({payload}: DeletePatientAction): Generator {
-    console.log(payload);
     try {
         const response: AxiosResponse = (yield axios.delete(Urls.DELETE_PATIENT_DATA_ACTION_URL, {
             params: {

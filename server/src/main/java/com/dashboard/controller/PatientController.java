@@ -35,13 +35,13 @@ public class PatientController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(ControllerConstants.GET_PATIENT_DATA_URL)
     public Page<Patient> getPatient(@RequestParam String key, @RequestParam String value) {
-        return repository.findPatient(key,value, PageRequest.of(0, 10));
+        return repository.findPatient(key,value, PageRequest.of(0, 100));
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(ControllerConstants.GET_PATIENT_IN_RANGE_DATA_URL)
     public Page<Patient> getPatientInRange(@RequestParam String key, @RequestParam int gte, @RequestParam int lte) {
-        return repository.findPatientInRange(key, gte, lte, PageRequest.of(0, 10));
+        return repository.findPatientInRange(key, gte, lte, PageRequest.of(0, 100));
     }
 
     @CrossOrigin(origins = "http://localhost:3000")

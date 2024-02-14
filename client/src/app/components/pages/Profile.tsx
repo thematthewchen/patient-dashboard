@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../state/store';
-import PatientForm from './widgets/PatientForm';
+import { RootState } from '../../state/store';
+import PatientForm from '../widgets/PatientForm';
+import NavBar from '../widgets/NavBar';
 import {
     Container,
     Text,
@@ -12,11 +13,15 @@ export default function Profile() {
     const dashboardState = useSelector((state: RootState) => state.dashboardState);
 
     return (
+        <>
+        <NavBar/>
         <Container maxW='container.sm' padding='10'>
             <Center>
                 <Text fontSize='4xl'>{dashboardState.selectedProfile.firstName}'s Profile</Text>
             </Center>
             <PatientForm newPatient={false}/>
         </Container>
+        </>
+        
     );
 }

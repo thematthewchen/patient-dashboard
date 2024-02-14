@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Dashboard from './app/components/Dashboard';
-import Profile from './app/components/Profile';
-import NewProfile from './app/components/NewProfile';
+import SignIn from './app/components/pages/SignIn';
+import CreateAccount from './app/components/pages/CreateAccount';
+import Dashboard from './app/components/pages/Dashboard';
+import Profile from './app/components/pages/Profile';
+import NewProfile from './app/components/pages/NewProfile';
 import { ChakraProvider } from '@chakra-ui/react'
 import { store } from './app/state/store';
 import { Provider } from 'react-redux';
@@ -31,8 +33,14 @@ root.render(
             <Route path="/new-profile">
               <NewProfile />
             </Route>
+            <Route path="/sign-in">
+              <SignIn/>
+            </Route>
+            <Route path="/create-account">
+              <CreateAccount/>
+            </Route>
             <Route path="/">
-              <Redirect to={"/dashboard"}/>
+              <Redirect to={"/sign-in"}/>
             </Route>
           </Switch>
         </Router>

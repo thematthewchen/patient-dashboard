@@ -45,6 +45,7 @@ export default function DeleteProfile() {
             isClosable: true,
         });
         history.push(Urls.DASHBOARD_ROUTE_URL);
+        dispatch(dashboardActions.getAllPatients());
     }
 
     return (

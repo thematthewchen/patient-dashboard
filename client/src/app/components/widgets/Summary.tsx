@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Text,
   Stat,
@@ -11,8 +11,7 @@ import {
   StackDivider,
   Box
 } from '@chakra-ui/react'
-import { dashboardActions } from '../../state/ducks/patient-dashboard';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
 import { Status } from '../../state/ducks/patient-dashboard/types';
 
@@ -22,7 +21,6 @@ import { Status } from '../../state/ducks/patient-dashboard/types';
  * @returns {ReactNode} A React element that renders the summary
  */
 export default function Summary() {
-    const dispatch = useDispatch();
     const dashboardState = useSelector((state: RootState) => state.dashboardState);
 
     /**
@@ -34,10 +32,6 @@ export default function Summary() {
     const getStatusCount = (status: string) => {
         return dashboardState.totalPatientResponse.content.filter((patient) => patient.status === status).length;
     }
-
-    useEffect(() => {
-        dispatch(dashboardActions.getAllPatients());
-    }, [dashboardState.totalPatientResponse]);
 
     return (
         <Card>

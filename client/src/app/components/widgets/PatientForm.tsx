@@ -171,6 +171,7 @@ export default function PatientForm(props: PatientFormProps) {
         isClosable: true,
       });
       history.push(Urls.DASHBOARD_ROUTE_URL);
+      dispatch(dashboardActions.getAllPatients());
     }
   }
 

@@ -33,7 +33,7 @@ export default function Dashboard() {
     useEffect(() => {
         dispatch(dashboardActions.clearSearchResultsAction());
         dispatch(dashboardActions.getAllPatients());
-    }, []);
+    }, [dispatch]);
 
     return (
         <>

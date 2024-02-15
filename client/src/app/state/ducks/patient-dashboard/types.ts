@@ -149,30 +149,6 @@ export interface ClearResultsAction {
     type: typeof CLEAR_RESULTS;
 }
 
-export const ADD_ADDRESS = 'ADD_ADDRESS';
-export interface AddAddressAction {
-    type: typeof ADD_ADDRESS;
-    payload: string;
-}
-
-export const REMOVE_ADDRESS = 'REMOVE_ADDRESS';
-export interface RemoveAddressAction {
-    type: typeof REMOVE_ADDRESS;
-    payload: number;
-}
-
-export const ADD_FIELD = 'ADD_FIELD';
-export interface AddFieldAction {
-    type: typeof ADD_FIELD;
-    payload: Field;
-}
-
-export const REMOVE_FIELD = 'REMOVE_FIELD';
-export interface RemoveFieldAction {
-    type: typeof REMOVE_FIELD;
-    payload: number;
-}
-
 export type DashboardActionTypes = 
     | CreatePatientAction
     | CreatePatientSuccessAction
@@ -190,8 +166,4 @@ export type DashboardActionTypes =
     | DeletePatientErrorAction
     | DeletePatientSuccessAction
     | SelectPatientAction
-    | ClearResultsAction
-    | AddAddressAction
-    | RemoveAddressAction
-    | AddFieldAction
-    | RemoveFieldAction;
+    | ClearResultsAction;

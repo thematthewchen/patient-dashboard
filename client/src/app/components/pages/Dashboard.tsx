@@ -11,6 +11,12 @@ import {
     Center
 } from '@chakra-ui/react'
 
+/**
+ * The Dashboard component renders the patient management dashboard where prescribers can search
+ * for patients and update their info.
+ *
+ * @returns {ReactNode} A React element that renders the dashboard.
+ */
 export default function Dashboard() {
     const dispatch = useDispatch();
     useEffect(() => {

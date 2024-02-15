@@ -6,6 +6,11 @@ import {
     Text
 } from '@chakra-ui/react'
 
+/**
+ * This component renders the New Profile page where prescribers can create profiles for new patients.
+ *
+ * @returns {ReactNode} A React element that renders the New Profile page.
+ */
 export default function NewProfile() {
     return (
         <>

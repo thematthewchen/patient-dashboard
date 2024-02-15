@@ -8,10 +8,7 @@ import { ApiResponseError,
     GET_PATIENT_RANGE_SUCCESS,
     PatientResponse, 
     SELECT_PATIENT, 
-    CLEAR_RESULTS,
-    ADD_ADDRESS,
-    ADD_FIELD,
-    REMOVE_FIELD} from "./types";
+    CLEAR_RESULTS} from "./types";
 
 export interface DashboardState {
     patientResponse: PatientResponse;
@@ -86,35 +83,6 @@ const dashboardReducer = (state: DashboardState = initialState, action: Dashboar
                     numberOfElements: 0
                 },
                 selectedProfile: noSelectedProfile
-            }
-        };
-        case ADD_ADDRESS: {
-            return {
-                ...state,
-                selectedProfile: {
-                    ...state.selectedProfile,
-                    city: [...state.selectedProfile.city, action.payload]
-                }
-            }
-        };
-        case ADD_FIELD: {
-            return {
-                ...state,
-                selectedProfile: {
-                    ...state.selectedProfile,
-                    fieldKeys: state.selectedProfile.fieldKeys == undefined ? [action.payload.key] : [...state.selectedProfile.fieldKeys, action.payload.key],
-                    fieldValues: state.selectedProfile.fieldValues == undefined ? [action.payload.key] : [...state.selectedProfile.fieldValues, action.payload.value],
-                }
-            }
-        };
-        case REMOVE_FIELD: {
-            return {
-                ...state,
-                selectedProfile: {
-                    ...state.selectedProfile,
-                    fieldKeys: [...state.selectedProfile.fieldKeys.slice(0, action.payload), ...state.selectedProfile.fieldKeys.slice(action.payload + 1)],
-                    fieldValues: [...state.selectedProfile.fieldValues.slice(0, action.payload), ...state.selectedProfile.fieldValues.slice(action.payload + 1)]
-                }
             }
         };
         default:

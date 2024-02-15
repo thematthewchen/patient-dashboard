@@ -9,6 +9,11 @@ import {
     Center
 } from '@chakra-ui/react'
 
+/**
+ * This component renders the Profile page where prescribers can update profiles for existing patients.
+ *
+ * @returns {ReactNode} A React element that renders the Profile page.
+ */
 export default function Profile() {
     const dashboardState = useSelector((state: RootState) => state.dashboardState);
 

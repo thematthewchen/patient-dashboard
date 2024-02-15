@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import SignIn from './app/components/pages/SignIn';
-import CreateAccount from './app/components/pages/CreateAccount';
+import SignIn from './app/components/pages/auth/SignIn';
+import CreateAccount from './app/components/pages/auth/CreateAccount';
 import Dashboard from './app/components/pages/Dashboard';
 import Profile from './app/components/pages/Profile';
 import NewProfile from './app/components/pages/NewProfile';
 import { ChakraProvider } from '@chakra-ui/react'
 import { store } from './app/state/store';
 import { Provider } from 'react-redux';
+import { Urls } from './shared/urls';
 import {
   BrowserRouter as Router,
   Switch,
@@ -24,23 +25,23 @@ root.render(
       <Provider store={store}>
         <Router>
           <Switch>
-            <Route path="/dashboard">
+            <Route path={Urls.DASHBOARD_ROUTE_URL}>
               <Dashboard />
             </Route>
-            <Route path="/profile">
+            <Route path={Urls.PROFILE_ROUTE_URL}>
               <Profile />
             </Route>
-            <Route path="/new-profile">
+            <Route path={Urls.NEW_PATIENT_PROFILE_ROUTE_URL}>
               <NewProfile />
             </Route>
-            <Route path="/sign-in">
+            <Route path={Urls.SIGN_IN_ROUTE_URL}>
               <SignIn/>
             </Route>
-            <Route path="/create-account">
+            <Route path={Urls.CREATE_ACCOUNT_ROUTE_URL}>
               <CreateAccount/>
             </Route>
             <Route path="/">
-              <Redirect to={"/sign-in"}/>
+              <Redirect to={Urls.SIGN_IN_ROUTE_URL}/>
             </Route>
           </Switch>
         </Router>

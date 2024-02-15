@@ -5,7 +5,6 @@ import {
   InputLeftAddon,
   Input,
   Select,
-  Button,
   RangeSlider,
   RangeSliderTrack,
   RangeSliderFilledTrack,
@@ -14,35 +13,47 @@ import {
 } from '@chakra-ui/react'
 import { useDispatch } from 'react-redux';
 import { dashboardActions } from '../../state/ducks/patient-dashboard';
+import { Constants } from '../../../shared/constants';
+import { Status } from '../../state/ducks/patient-dashboard/types';
 
+/**
+ * This component renders the search bar in the dashboard
+ *
+ * @returns {ReactNode} A React element that renders the search bar
+ */
 export default function Search() {
-  const [fieldSelection, setFieldSelection] = useState('firstName'); 
+  const [fieldSelection, setFieldSelection] = useState(Constants.firstNameKey); 
   const [sliderValue, setSliderValue] = useState([25, 75]);
   const dispatch = useDispatch();
+
+  /**
+   * lookupProfile dispatches a getPatient action to find patients with a given key and value
+   */
   const lookupProfile = (event) => {
     dispatch(
       dashboardActions.getPatient({
-        "key": fieldSelection,
-        "value": event.target.value,
+        key: fieldSelection,
+        value: event.target.value,
       })
     );
   };
 
-  const selectKey = (event) => {
-    setFieldSelection(event.target.value);
-  };
-
+  /**
+   * searchAgeRange dispatches a getPatientRange action to find patients within an age range
+   */
   const searchAgeRange = () => {
     dispatch(
       dashboardActions.getPatientRange({
-        "key": fieldSelection,
-        "gte": sliderValue[0],
-        "lte": sliderValue[1]
+        key: fieldSelection,
+        gte: sliderValue[0],
+        lte: sliderValue[1]
       })
     );
   }
+
+  // Based on the field selected, either show a search input, a slider, or a dropdown
   let searchBarContent = <></>;
-  if (fieldSelection === 'age') {
+  if (fieldSelection === Constants.ageKey) {
     searchBarContent = 
     (<RangeSlider
       marginLeft='2'
@@ -81,34 +92,35 @@ export default function Search() {
       <RangeSliderThumb index={0} />
       <RangeSliderThumb index={1} />
     </RangeSlider>)
-  } else if (fieldSelection === 'status') {
-    searchBarContent = (
-    <Select placeholder='Select status' onChange={lookupProfile}>
-      <option value='INQUIRY'>INQUIRY</option>
-      <option value='ONBOARDING'>ONBOARDING</option>
-      <option value='ACTIVE'>ACTIVE</option>
-      <option value='CHURNED'>CHURNED</option>
+  } else if (fieldSelection === Constants.statusKey) {
+    searchBarContent = 
+    (<Select placeholder='Select status' onChange={lookupProfile}>
+      <option value={Status.INQUIRY}>INQUIRY</option>
+      <option value={Status.ONBOARDING}>ONBOARDING</option>
+      <option value={Status.ACTIVE}>ACTIVE</option>
+      <option value={Status.CHURNED}>CHURNED</option>
     </Select>)
   } else {
-    searchBarContent = (<Input 
-            placeholder='Search for patient profile' 
-            onChange={lookupProfile} />)
+    searchBarContent = 
+    (<Input 
+        placeholder='Search for patient profile' 
+        onChange={lookupProfile} />)
   }
 
   return (
     <Stack spacing={4} direction='row' align='center'>
       <InputGroup>
           <InputLeftAddon paddingX="0">
-            <Select borderRightRadius="0" onChange={selectKey}>
-                <option value='firstName'>First Name</option>
-                <option value='lastName'>Last Name</option>
-                <option value='age'>Age Range</option>
-                <option value='city'>City</option>
-                <option value='status'>Status</option>
+            <Select borderRightRadius="0" onChange={(event) => {setFieldSelection(event.target.value)}}>
+                <option value={Constants.firstNameKey}>First Name</option>
+                <option value={Constants.lasteNameKey}>Last Name</option>
+                <option value={Constants.ageKey}>Age Range</option>
+                <option value={Constants.cityKey}>City</option>
+                <option value={Constants.statusKey}>Status</option>
             </Select>
           </InputLeftAddon>
           {searchBarContent}
       </InputGroup>
     </Stack>
-)
+  )
 }

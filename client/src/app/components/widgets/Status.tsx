@@ -3,7 +3,7 @@ import {
   Text
 } from '@chakra-ui/react'
 
-export interface SearchResultProps {
+export interface StatusProps {
     status: string,
 }
 
@@ -14,16 +14,23 @@ const statusColor = {
     CHURNED: 'gray.100'
 }
 
-export default function SearchResult(props: SearchResultProps) {
+/**
+ * This component renders a status widget in a search result
+ *
+ * @param {StatusProps} props contains status about patient
+ * @returns {ReactNode} A React element that renders the status widget
+ */
+export default function Status(props: StatusProps) {
+    const { status } = props;
     return (
         <Text 
-            bg={statusColor[props.status]} 
+            bg={statusColor[status]} 
             borderRadius='5' 
             padding='1'
             justifyContent="flex-end"
             fontSize='md'
         >
-            {props.status}
+            {status}
         </Text>
     )
 }

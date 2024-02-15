@@ -6,7 +6,9 @@ import NavBar from '../widgets/NavBar';
 import {
     Container,
     Text,
-    Center
+    Center,
+    Card,
+    CardBody
 } from '@chakra-ui/react'
 
 /**
@@ -19,13 +21,17 @@ export default function Profile() {
 
     return (
         <>
-        <NavBar/>
-        <Container maxW='container.sm' padding='10'>
-            <Center>
-                <Text fontSize='4xl'>{dashboardState.selectedProfile.firstName}'s Profile</Text>
-            </Center>
-            <PatientForm newPatient={false}/>
-        </Container>
+            <NavBar/>
+            <Container maxW='container.sm' padding='10'>
+                <Card>
+                    <CardBody padding='10'>
+                        <Center>
+                            <Text fontSize='4xl'>{dashboardState.selectedProfile.firstName}'s Profile</Text>
+                        </Center>
+                        <PatientForm newPatient={false}/>
+                    </CardBody>
+                </Card>
+            </Container>
         </>
         
     );

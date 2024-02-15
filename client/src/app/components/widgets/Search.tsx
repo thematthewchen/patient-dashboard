@@ -94,7 +94,7 @@ export default function Search() {
     </RangeSlider>)
   } else if (fieldSelection === Constants.statusKey) {
     searchBarContent = 
-    (<Select placeholder='Select status' onChange={lookupProfile}>
+    (<Select placeholder='Select status' onChange={lookupProfile} bg='white'>
       <option value={Status.INQUIRY}>INQUIRY</option>
       <option value={Status.ONBOARDING}>ONBOARDING</option>
       <option value={Status.ACTIVE}>ACTIVE</option>
@@ -104,7 +104,7 @@ export default function Search() {
     searchBarContent = 
     (<Input 
         placeholder='Search for patient profile' 
-        onChange={lookupProfile} />)
+        onChange={lookupProfile} bg='white'/>)
   }
 
   return (

@@ -55,6 +55,7 @@ export default function SearchResult(props: SearchResultProps) {
                 color: "teal.500",
                 cursor: 'pointer'
             }}
+            bg='white'
             onClick={setSelectedProfile}
         >
             <Flex justifyContent="flex-end">

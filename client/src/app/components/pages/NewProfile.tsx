@@ -3,7 +3,9 @@ import PatientForm from '../widgets/PatientForm';
 import NavBar from '../widgets/NavBar';
 import {
     Container,
-    Text
+    Text,
+    Card,
+    CardBody
 } from '@chakra-ui/react'
 
 /**
@@ -16,8 +18,12 @@ export default function NewProfile() {
         <>
             <NavBar/>
             <Container maxW='container.sm' padding='10'>
-                <Text fontSize='4xl'>Create a New Patient Profile</Text>
-                <PatientForm newPatient={true} />
+                <Card>
+                    <CardBody padding='10'>
+                            <Text fontSize='4xl'>Create a New Patient Profile</Text>
+                            <PatientForm newPatient={true} />
+                    </CardBody>
+                </Card>
             </Container>
         </>
     );

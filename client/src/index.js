@@ -17,11 +17,12 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
+import Theme from './shared/theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={Theme}>
       <Provider store={store}>
         <Router>
           <Switch>

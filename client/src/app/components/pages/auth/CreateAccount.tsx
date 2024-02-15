@@ -5,6 +5,9 @@ import {
     Input,
     Button,
     Heading,
+    Card,
+    CardBody,
+    FormLabel,
     useToast
 } from '@chakra-ui/react'
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
@@ -63,23 +66,28 @@ export default function CreateAccount() {
       });
   }
   return (
-      <Container maxW='container.sm'>
-          <Heading marginTop='10'>Create account</Heading>
-          <Text fontSize='2xl' marginTop='10'>Create a new account to access your patient dashboard</Text>
-          <Input 
-              marginTop='10'
-              type='email'
-              placeholder='Enter your email'
-              value={email}
-              required
-              onChange={(e) => {setEmail(e.target.value)}} />
-          <Input 
-              placeholder='Enter your password'
-              type='password'
-              value={password}
-              required
-              onChange={(e) => {setPassword(e.target.value)}}  />
-          <Button colorScheme='teal' marginTop='10' onClick={onSubmit}>Submit</Button>
+    <Container maxW='container.sm' padding='10'>
+        <Card>
+            <CardBody padding='10'>
+                <Heading>Create account</Heading>
+                <Text fontSize='2xl' marginTop='10'>Create a new account to access your patient dashboard</Text>
+                <FormLabel marginTop='10'>New Email</FormLabel>
+                <Input 
+                    type='email'
+                    placeholder='Enter your email'
+                    value={email}
+                    required
+                    onChange={(e) => {setEmail(e.target.value)}} />
+                <FormLabel marginTop='10'>New Password</FormLabel>
+                <Input 
+                    placeholder='Enter your password'
+                    type='password'
+                    value={password}
+                    required
+                    onChange={(e) => {setPassword(e.target.value)}}  />
+                <Button colorScheme='teal' marginTop='10' onClick={onSubmit}>Submit</Button>
+            </CardBody>
+        </Card>
       </Container>
   );
 }

@@ -7,6 +7,9 @@ import {
     Button,
     Flex,
     Spacer,
+    Card,
+    CardBody,
+    FormLabel,
     useToast,
 } from '@chakra-ui/react'
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
@@ -57,27 +60,32 @@ export default function SignIn() {
        
     }
     return (
-        <Container maxW='container.sm'>
-            <Heading marginTop='10'>Welcome!</Heading>
-            <Text fontSize='2xl' marginTop='10'>Please sign in to access your patient dashboard</Text>
-            <Input 
-                marginTop='10'
-                type='email'
-                placeholder='Enter your email'
-                value={email}
-                required
-                onChange={(e) => setEmail(e.target.value)} />
-            <Input 
-                placeholder='Enter your password'
-                type='password'
-                value={password}
-                required
-                onChange={(e) => setPassword(e.target.value)}  />
-            <Flex>
-                <Button colorScheme='teal' marginTop='10' onClick={onLogin}>Sign In</Button>
-                <Spacer/>
-                <Button marginTop='10' onClick={() => {history.push(Urls.CREATE_ACCOUNT_ROUTE_URL)}}>Create an account</Button>
-            </Flex>
+        <Container maxW='container.sm' padding='10'>
+            <Card>
+                <CardBody padding='10'>
+                    <Heading>Welcome!</Heading>
+                    <Text fontSize='2xl' marginTop='10'>Please sign in to access your patient dashboard</Text>
+                    <FormLabel marginTop='10'>Email</FormLabel>
+                    <Input 
+                        type='email'
+                        placeholder='Enter your email'
+                        value={email}
+                        required
+                        onChange={(e) => setEmail(e.target.value)} />
+                    <FormLabel marginTop='10'>Password</FormLabel>
+                    <Input 
+                        placeholder='Enter your password'
+                        type='password'
+                        value={password}
+                        required
+                        onChange={(e) => setPassword(e.target.value)}  />
+                    <Flex>
+                        <Button colorScheme='teal' marginTop='10' onClick={onLogin}>Sign In</Button>
+                        <Spacer/>
+                        <Button marginTop='10' onClick={() => {history.push(Urls.CREATE_ACCOUNT_ROUTE_URL)}}>Create an account</Button>
+                    </Flex>
+                </CardBody>
+            </Card>
         </Container>
     );
 }

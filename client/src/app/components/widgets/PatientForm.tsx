@@ -16,7 +16,8 @@ import {
   useToast,
   CloseButton,
   Spacer,
-  Center
+  Center,
+  Textarea
 } from '@chakra-ui/react';
 import { useHistory } from "react-router-dom";
 import { Urls } from '../../../shared/urls';
@@ -180,23 +181,23 @@ export default function PatientForm(props: PatientFormProps) {
         <FormLabel paddingTop='5' htmlFor={Constants.cityKey}>Address</FormLabel>
         <Flex>
           <Box>
-          <Input
-            placeholder='Enter street address'
-            onChange={(event) => setStreetAddresses(streetAddresses.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
-            value={streetAddresses[index]}
-          />
-          <Input
-            placeholder='Enter city'
-            onChange={(event) => setCities(cities.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
-            value={city}
-          />
-          <Input
-            placeholder='Enter zipcode'
-            onChange={(event) => setZipcodes(zipcodes.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
-            value={zipcodes[index]}
-            maxLength={5}
-            type="number"
-          />
+            <Input
+              placeholder='Enter street address'
+              onChange={(event) => setStreetAddresses(streetAddresses.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
+              value={streetAddresses[index]}
+            />
+            <Input
+              placeholder='Enter city'
+              onChange={(event) => setCities(cities.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
+              value={city}
+            />
+            <Input
+              placeholder='Enter zipcode'
+              onChange={(event) => setZipcodes(zipcodes.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
+              value={zipcodes[index]}
+              maxLength={5}
+              type="number"
+            />
           </Box>
           <CloseButton onClick={() => removeAddress(index)}/>
         </Flex>
@@ -208,19 +209,21 @@ export default function PatientForm(props: PatientFormProps) {
     const fieldKeyId = 'fieldKeys[' + index + "]";
     const fieldValueId = 'fieldValues[' + index + "]";
     return (
-      <Flex key={fieldKeyId}>
-        <Input
-          id={fieldKeyId}
-          placeholder='Enter the title of a new field'
-          onChange={(event) => setFieldKeys(fieldKeys.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
-          value={fieldKey}
-        />
-        <Input
-          id={fieldValueId}
-          placeholder='Enter the value of a new field'
-          onChange={(event) => setFieldValues(fieldValues.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
-          value={fieldValues[index]}
-        />
+      <Flex key={fieldKeyId} marginTop='5'>
+        <Box>
+          <Input
+            id={fieldKeyId}
+            placeholder='Enter the title of a new field'
+            onChange={(event) => setFieldKeys(fieldKeys.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
+            value={fieldKey}
+          />
+          <Textarea 
+            id={fieldValueId}
+            placeholder='Enter the value of a new field'
+            onChange={(event) => setFieldValues(fieldValues.map((element, mapIndex) => mapIndex === index ? event.target.value: element))}
+            value={fieldValues[index]}
+          />
+        </Box>
         <CloseButton onClick={() => removeField(index)}/>
       </Flex>
     )

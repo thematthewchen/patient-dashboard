@@ -4,6 +4,7 @@ import { CREATE_PATIENT,
     PatientLookup, 
     PatientRangeLookup,
     GET_PATIENT, 
+    GET_ALL_PATIENTS,
     Patient, 
     SELECT_PATIENT,
     CLEAR_RESULTS, 
@@ -24,6 +25,10 @@ const getPatientRange = (patientRangeLookup: PatientRangeLookup): DashboardActio
     payload: patientRangeLookup,
 });
 
+const getAllPatients = (): DashboardActionTypes => ({
+    type: GET_ALL_PATIENTS
+});
+
 const deletePatient = (id: string | undefined): DashboardActionTypes => ({
     type: DELETE_PATIENT,
     payload: id,
@@ -42,6 +47,7 @@ export default {
     createOrUpdatePatient,
     getPatient,
     getPatientRange,
+    getAllPatients,
     deletePatient,
     selectPatientAction,
     clearSearchResultsAction

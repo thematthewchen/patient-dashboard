@@ -8,10 +8,13 @@ import { ApiResponseError,
     GET_PATIENT_RANGE_SUCCESS,
     PatientResponse, 
     SELECT_PATIENT, 
-    CLEAR_RESULTS} from "./types";
+    CLEAR_RESULTS,
+    GET_ALL_PATIENTS,
+    GET_ALL_PATIENTS_SUCCESS} from "./types";
 
 export interface DashboardState {
-    patientResponse: PatientResponse;
+    patientSearchResponse: PatientResponse;
+    totalPatientResponse: PatientResponse;
     selectedProfile: Patient;
     loading: boolean;
     errors: ApiResponseError[];
@@ -32,7 +35,11 @@ const noSelectedProfile = {
 }
 
 export const initialState: DashboardState = {
-    patientResponse: {
+    patientSearchResponse: {
+        content: [],
+        numberOfElements: 0
+    },
+    totalPatientResponse: {
         content: [],
         numberOfElements: 0
     },
@@ -52,7 +59,7 @@ const dashboardReducer = (state: DashboardState = initialState, action: Dashboar
         case GET_PATIENT_SUCCESS: {
             return {
                 ...state,
-                patientResponse: action.payload,
+                patientSearchResponse: action.payload,
                 loading: false
             }
         };
@@ -65,7 +72,20 @@ const dashboardReducer = (state: DashboardState = initialState, action: Dashboar
         case GET_PATIENT_RANGE_SUCCESS: {
             return {
                 ...state,
-                patientResponse: action.payload,
+                patientSearchResponse: action.payload,
+                loading: false
+            }
+        };
+        case GET_ALL_PATIENTS: {
+            return {
+                ...state,
+                loading: true
+            }
+        };
+        case GET_ALL_PATIENTS_SUCCESS: {
+            return {
+                ...state,
+                totalPatientResponse: action.payload,
                 loading: false
             }
         };
@@ -78,7 +98,7 @@ const dashboardReducer = (state: DashboardState = initialState, action: Dashboar
         case CLEAR_RESULTS: {
             return {
                 ...state,
-                patientResponse: {
+                patientSearchResponse: {
                     content: [],
                     numberOfElements: 0
                 },

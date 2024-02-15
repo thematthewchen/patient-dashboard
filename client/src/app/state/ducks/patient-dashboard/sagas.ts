@@ -16,6 +16,9 @@ import { CREATE_PATIENT,
     GET_PATIENT_RANGE_ERROR, 
     GET_PATIENT_RANGE_SUCCESS, 
     GetPatientRangeAction,
+    GET_ALL_PATIENTS,
+    GET_ALL_PATIENTS_SUCCESS,
+    GET_ALL_PATIENTS_ERROR,
 } from './types';
 import { Urls } from '../../../../shared/urls';
 
@@ -102,6 +105,30 @@ function* getPatientRange({payload}: GetPatientRangeAction): Generator {
     }
 }
 
+function* getAllPatients(): Generator {
+    try {
+        const response: AxiosResponse = (yield axios.get(Urls.GET_ALL_PATIENT_DATA_ACTION_URL)) as AxiosResponse;
+        const data = response.data;
+        if (data.error === undefined) {
+            yield put({
+                type: GET_ALL_PATIENTS_SUCCESS, 
+                payload: data
+            })
+        } else {
+            yield put({
+                type: GET_ALL_PATIENTS_ERROR, 
+                payload: [data.error]
+            })
+        }
+    } catch (e) {
+        console.log(e);
+        yield put({
+            type: GET_ALL_PATIENTS_ERROR,
+            payload: [{ code: 'UNEXPECTED_ERROR', message: 'There was an unexpected error getting all patient data'}]
+        })
+    }
+}
+
 function* deletePatient({payload}: DeletePatientAction): Generator {
     try {
         const response: AxiosResponse = (yield axios.delete(Urls.DELETE_PATIENT_DATA_ACTION_URL, {
@@ -138,6 +165,10 @@ function* watchGetPatient() {
     yield takeEvery(GET_PATIENT, getPatient);
 }
 
+function* watchGetAllPatient() {
+    yield takeEvery(GET_ALL_PATIENTS, getAllPatients);
+}
+
 function* watchGetPatientRange() {
     yield takeEvery(GET_PATIENT_RANGE, getPatientRange);
 }
@@ -150,5 +181,6 @@ export default function* rootSaga(): Generator {
     yield all([fork(watchCreatePatient), 
         fork(watchGetPatient),
         fork(watchGetPatientRange),
+        fork(watchGetAllPatient),
         fork(watchDeletePatient)]);
 }

@@ -108,7 +108,7 @@ export default function Search() {
   }
 
   return (
-    <Stack spacing={4} direction='row' align='center'>
+    <Stack spacing={4} direction='row' align='center' marginTop='10'>
       <InputGroup>
           <InputLeftAddon paddingX="0">
             <Select borderRightRadius="0" onChange={(event) => {setFieldSelection(event.target.value)}}>

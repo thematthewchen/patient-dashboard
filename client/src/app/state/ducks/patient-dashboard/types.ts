@@ -104,6 +104,23 @@ export interface GetPatientRangeErrorAction {
     payload: PatientResponse;
 }
 
+export const GET_ALL_PATIENTS = 'GET_ALL_PATIENTS';
+export interface GetAllPatientsAction {
+    type: typeof GET_ALL_PATIENTS;
+}
+
+export const GET_ALL_PATIENTS_SUCCESS = 'GET_ALL_PATIENTS_SUCCESS';
+export interface GetAllPatientsSuccessAction {
+    type: typeof GET_ALL_PATIENTS_SUCCESS;
+    payload: PatientResponse;
+}
+
+export const GET_ALL_PATIENTS_ERROR = 'GET_ALL_PATIENTS_ERROR';
+export interface GetAllPatientsErrorAction {
+    type: typeof GET_ALL_PATIENTS_ERROR;
+    payload: PatientResponse;
+}
+
 export const UPDATE_PATIENT = 'UPDATE_PATIENT';
 export interface UpdatePatientAction {
     type: typeof UPDATE_PATIENT;
@@ -159,6 +176,9 @@ export type DashboardActionTypes =
     | GetPatientRangeAction
     | GetPatientRangeSuccessAction
     | GetPatientRangeErrorAction
+    | GetAllPatientsAction
+    | GetAllPatientsSuccessAction
+    | GetAllPatientsErrorAction
     | UpdatePatientAction
     | UpdatePatientSuccessAction
     | UpdatePatientErrorAction

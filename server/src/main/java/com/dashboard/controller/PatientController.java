@@ -48,12 +48,13 @@ public class PatientController {
         repository.deleteById(id);
     }
 
-    // For testing
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(ControllerConstants.GET_ALL_PATIENT_DATA_URL)
     public Iterable<Patient> getAll() {
         return repository.findAll();
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping(ControllerConstants.DELETE_ALL_PATIENT_DATA_URL)
     public void deleteAll() {
         repository.deleteAll();

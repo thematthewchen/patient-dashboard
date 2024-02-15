@@ -4,6 +4,7 @@ import { RootState } from '../../state/store';
 import Search from '../widgets/Search';
 import SearchResult from '../widgets/SearchResult';
 import NavBar from '../widgets/NavBar';
+import Summary from '../widgets/Summary';
 import { dashboardActions } from '../../state/ducks/patient-dashboard';
 import {
     Container,
@@ -19,12 +20,8 @@ import {
  */
 export default function Dashboard() {
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(dashboardActions.clearSearchResultsAction());
-    }, []);
-
     const dashboardState = useSelector((state: RootState) => state.dashboardState);
-    const searchResultContent = dashboardState.patientResponse.content.map((patient) => {
+    const searchResultContent = dashboardState.patientSearchResponse.content.map((patient) => {
         return (
             <SearchResult 
                 {...patient}
@@ -32,6 +29,12 @@ export default function Dashboard() {
             />
         )
     }); 
+
+    useEffect(() => {
+        dispatch(dashboardActions.clearSearchResultsAction());
+        dispatch(dashboardActions.getAllPatients());
+    }, []);
+
     return (
         <>
             <NavBar/>
@@ -41,10 +44,11 @@ export default function Dashboard() {
                         Patient Management Dashboard
                     </Heading>
                 </Center>
+                <Summary/>
                 <Search />
-                {dashboardState.patientResponse.numberOfElements === 1 ? (
-                    <Center padding='2'>{dashboardState.patientResponse.numberOfElements} Result</Center>) : (
-                    <Center padding='2'>{dashboardState.patientResponse.numberOfElements} Results</Center>
+                {dashboardState.patientSearchResponse.numberOfElements === 1 ? (
+                    <Center padding='2'>{dashboardState.patientSearchResponse.numberOfElements} Result</Center>) : (
+                    <Center padding='2'>{dashboardState.patientSearchResponse.numberOfElements} Results</Center>
                 )}
                 {searchResultContent}
             </Container>

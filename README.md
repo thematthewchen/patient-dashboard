@@ -1,4 +1,4 @@
-# finni-patient-dashboard
+# patient-dashboard
 
 This repo is divided into two folders:
 
